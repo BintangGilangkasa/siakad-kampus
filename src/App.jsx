@@ -6,6 +6,7 @@ import KrsPage from './pages/krsRegistrasi/KrsPage';
 import CetakKrsPage from './pages/krsRegistrasi/CetakKrsPage';
 import BiodataPage from './pages/profilAkun/BiodataPage';
 import AccountSettingsPage from './pages/profilAkun/AccountSettingsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('beranda');
@@ -36,6 +37,9 @@ export default function App() {
       case 'lihat-penawaran':
         return <KrsPage />;
 
+      case 'cetak-krs':
+        return <CetakKrsPage />;
+
       // Modul Profil & Biodata
       case 'biodata':
         return <BiodataPage />;
@@ -44,24 +48,14 @@ export default function App() {
       case 'account':
         return <AccountSettingsPage />;
 
-      // Tampilan Placeholder untuk Halaman yang Belum Dibuat
+      // Tampilkan NotFoundPage jika tab tidak dikenali (Teruskan setActiveTab di sini)
       default:
-        return (
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-2 my-auto">
-            <h2 className="text-base font-bold text-slate-800 capitalize">
-              Halaman {activeTab.replace('-', ' ')}
-            </h2>
-            <p className="text-xs text-slate-400">
-              Fitur ini sedang dalam tahap pengembangan.
-            </p>
-          </div>
-        );
+        return <NotFoundPage setActiveTab={setActiveTab} />;
     }
   };
 
   return (
     <div className="flex min-h-screen bg-slate-100 font-sans text-slate-800">
-      
       {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -72,7 +66,6 @@ export default function App() {
 
       {/* Main Layout Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
-        
         {/* Top Navbar */}
         <Navbar
           onLogout={handleLogout}
@@ -83,9 +76,7 @@ export default function App() {
         <main className="p-3 sm:p-5 lg:p-6 flex-1 flex flex-col">
           {renderPageContent()}
         </main>
-
       </div>
-
     </div>
   );
 }
