@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import KrsPage from './pages/krsRegistrasi/KrsPage';
 import CetakKrsPage from './pages/krsRegistrasi/CetakKrsPage';
-import BiodataPage from './pages/profilAkun/BiodataPage';
+import CetakBiodataPage from "./pages/krsRegistrasi/CetakBiodataPage";
 import AccountSettingsPage from './pages/profilAkun/AccountSettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -42,13 +42,16 @@ export default function App() {
 
       // Modul Profil & Biodata
       case 'biodata':
-        return <BiodataPage />;
+        return <BiodataPage setActiveTab={setActiveTab} />;
+
+      case 'cetak-biodata':
+        return <CetakBiodataPage setActiveTab={setActiveTab} />;
 
       // Modul Pengaturan Akun
       case 'account':
         return <AccountSettingsPage />;
 
-      // Tampilkan NotFoundPage jika tab tidak dikenali (Teruskan setActiveTab di sini)
+      // Tampilkan NotFoundPage jika tab tidak dikenali
       default:
         return <NotFoundPage setActiveTab={setActiveTab} />;
     }
