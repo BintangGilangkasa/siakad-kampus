@@ -1,0 +1,142 @@
+import React, { useState } from 'react';
+import InputField from '../components/inputField';
+import Button from '../components/Button';
+import { User, Lock, BookOpen, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
+
+export default function LoginPage({ onLoginSuccess }) {
+
+  const [nim, setNim] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Gambar
+  const campusBgUrl = "/images/foto-kampus.png";
+  const logoCard = "src/assets/logo-uin.png"
+
+  const handleQuickDemoFill = () => {
+    setNim('2301019082');
+    setPassword('password123');
+    setError('');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!nim.trim()) {
+      setError('Nomor Induk Mahasiswa (NIM) wajib diisi.');
+      return;
+    }
+    if (!password) {
+      setError('Kata sandi wajib diisi.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      onLoginSuccess({
+        name: 'Bintang Gilangkasa Syailendra',
+        nim: nim,
+        prodi: 'S1 - Sains Data',
+        fakultas: 'Sains dan Teknologi',
+        semester: 7,
+        ipk: 3.88
+      });
+    }, 1000);
+  };
+
+  return (
+    <div 
+      className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 relative font-sans"
+      style={{ backgroundImage: `url('${campusBgUrl}')` }}
+    >
+      {/* Dark Overlay transparan agar teks & card tetap sangat jelas di atas foto kampus */}
+      <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>
+
+      {/* Card Login Ringkas (max-w-md) tanpa Panel Penjelasan Samping */}
+      <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
+        
+        {/* Header Logo & Title */}
+        <div className="text-center space-y-2.5 mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-linear-to-tr from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+            <img src={logoCard} className="w-8 h-11 object-contain" />
+          </div>
+          <div>
+            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
+              SIAKAD<span className="text-blue-600">.NextGen</span>
+            </h1>
+            <p className="text-xs text-slate-500 font-medium">Selamat Datang Kembali!</p>
+          </div>
+        </div>
+
+        {/* Form Input Login */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <InputField
+            label="Nomor Induk Mahasiswa (NIM)"
+            type="text"
+            placeholder="Masukkan NIM Anda..."
+            value={nim}
+            onChange={(e) => setNim(e.target.value)}
+            icon={User}
+            required
+          />
+
+          <InputField
+            label="Kata Sandi / Password"
+            type="password"
+            placeholder="••••••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            icon={Lock}
+            required
+          />
+
+          <div className="flex items-center justify-between text-xs pt-1">
+            <label className="flex items-center space-x-2 cursor-pointer text-slate-600">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span>Ingat saya</span>
+            </label>
+
+            <a
+              href="#lupa-password"
+              onClick={(e) => {
+                e.preventDefault();
+                alert('Silakan hubungi Biro Akademik / Dosen PA untuk reset password.');
+              }}
+              className="text-blue-600 font-bold hover:underline"
+            >
+              Lupa Password?
+            </a>
+          </div>
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            isLoading={isLoading}
+            className="w-full mt-2 py-3"
+            icon={ArrowRight}
+          >
+            Masuk ke SIAKAD
+          </Button>
+        </form>
+
+        {/* Footer Ringkas */}
+        <div className="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-400 flex items-center justify-center space-x-1.5">
+          <ShieldCheck className="w-4 h-4 text-emerald-500" />
+          <span>SIAKAD NextGen v2.0</span>
+        </div>
+
+      </div>
+    </div>
+  );
+}
