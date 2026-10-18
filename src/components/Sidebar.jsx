@@ -107,7 +107,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       icon: Wallet,
       items: [
         { id: 'rekap-pembayaran', label: 'Rekap Pembayaran', icon: CreditCard },
-        { id: 'info-tagihan', label: 'Informasi Tagihan UKT', icon: FileText },
+        { id: 'tagihan-ukt', label: 'Informasi Tagihan UKT', icon: FileText },
       ],
     },
     {

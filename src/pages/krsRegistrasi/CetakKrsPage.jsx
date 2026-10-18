@@ -2,6 +2,8 @@ import React from 'react';
 import { studentData } from '../../data/studentData';
 import { availableCourses } from '../../data/krsData';
 
+import logoIcon from '../../assets/logo-uin.png'
+
 const CetakKrsPage = ({ setActiveTab }) => {
   const student = studentData;
   // Mengambil daftar matakuliah (atau menggunakan sampel jika dari state/props)
@@ -45,9 +47,9 @@ const CetakKrsPage = ({ setActiveTab }) => {
         
         {/* Kop Surat */}
         <div className="flex items-center gap-4 border-b-4 border-double border-slate-900 pb-3 mb-6">
-          <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+          <div className="w-20 h-20 shrink-0 flex items-center justify-center">
             <img 
-              src="/images/logo-uin.png" 
+              src={logoIcon}
               alt="Logo Kampus" 
               className="w-full h-full object-contain"
               onError={(e) => {
@@ -88,11 +90,11 @@ const CetakKrsPage = ({ setActiveTab }) => {
         <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs sm:text-sm mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200 print:bg-transparent print:p-0 print:border-none">
           <div className="space-y-1">
             <p><span className="font-semibold inline-block w-28">NIM</span>: {student.nim}</p>
-            <p><span className="font-semibold inline-block w-28">Nama Mahasiswa</span>: <span className="uppercase font-bold">{student.name}</span></p>
+            <p><span className="font-semibold inline-block w-28">Nama</span>: <span className="uppercase">{student.name}</span></p>
             <p><span className="font-semibold inline-block w-28">Program Studi</span>: {student.prodi}</p>
           </div>
           <div className="space-y-1">
-            <p><span className="font-semibold inline-block w-28">Semester / Angkatan</span>: Semester {student.semester} ({student.angkatan})</p>
+            <p><span className="font-semibold inline-block w-28">Semester</span>: Semester {student.semester}</p>
             <p><span className="font-semibold inline-block w-28">Dosen PA</span>: {student.dosenPA}</p>
             <p><span className="font-semibold inline-block w-28">Batas Maks. SKS</span>: 24 SKS</p>
           </div>
@@ -108,6 +110,9 @@ const CetakKrsPage = ({ setActiveTab }) => {
               <th className="border border-slate-300 py-2 px-2 w-14">SKS</th>
               <th className="border border-slate-300 py-2 px-2 w-16">Kelas</th>
               <th className="border border-slate-300 py-2 px-3 text-left">Dosen Pengampu</th>
+              <th className="border border-slate-300 py-2 px-2 w-16">Ruang</th>
+              <th className="border border-slate-300 py-2 px-3 text-left">Hari</th>
+              <th className="border border-slate-300 py-2 px-3 text-left">Jam</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-300">
@@ -120,11 +125,14 @@ const CetakKrsPage = ({ setActiveTab }) => {
                   <td className="border border-slate-300 py-2 px-2 text-center font-semibold">{course.sks}</td>
                   <td className="border border-slate-300 py-2 px-2 text-center">{course.class || 'A'}</td>
                   <td className="border border-slate-300 py-2 px-3">{course.lecturer}</td>
+                  <td className="border border-slate-300 py-2 px-2 text-center">{course.room}</td>
+                  <td className="border border-slate-300 py-2 px-2 text-center">{course.day}</td>
+                  <td className="border border-slate-300 py-2 px-2 text-center">{course.time}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="border border-slate-300 py-4 text-center text-slate-500">
+                <td colSpan="9" className="border border-slate-300 py-4 text-center text-slate-500">
                   Belum ada mata kuliah yang diambil.
                 </td>
               </tr>
@@ -134,7 +142,7 @@ const CetakKrsPage = ({ setActiveTab }) => {
             <tr className="bg-slate-50 print:bg-slate-100 font-bold">
               <td colSpan="3" className="border border-slate-300 py-2 px-3 text-right">Total SKS Diambil:</td>
               <td className="border border-slate-300 py-2 px-2 text-center text-blue-700 print:text-slate-900">{totalSks}</td>
-              <td colSpan="2" className="border border-slate-300 py-2 px-3"></td>
+              <td colSpan="5" className="border border-slate-300 py-2 px-3"></td>
             </tr>
           </tfoot>
         </table>
@@ -144,7 +152,7 @@ const CetakKrsPage = ({ setActiveTab }) => {
           <div className="flex justify-between items-start text-center">
             <div className="w-60">
               <p>Menyetujui,</p>
-              <p className="font-semibold text-slate-900 mt-0.5">Dosen Penasihat Akademik</p>
+              <p className="font-semibold text-slate-900 mt-0.5">Dosen Pembimbing Akademik</p>
               <div className="h-20"></div>
               <p className="font-bold text-slate-900 underline">{student.dosenPA}</p>
             </div>
