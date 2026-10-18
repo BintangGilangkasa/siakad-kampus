@@ -4,9 +4,10 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import KrsPage from './pages/krsRegistrasi/KrsPage';
 import CetakKrsPage from './pages/krsRegistrasi/CetakKrsPage';
-import CetakBiodataPage from "./pages/krsRegistrasi/CetakBiodataPage";
+import { CetakBiodataPage } from "./pages/krsRegistrasi/CetakBiodataPage";
 import AccountSettingsPage from './pages/profilAkun/AccountSettingsPage';
-import NotFoundPage from './pages/NotFoundPage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import InformasiKehadiran from './pages/perkuliahan/InformasiKehadiran';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('beranda');
@@ -50,6 +51,10 @@ export default function App() {
       // Modul Pengaturan Akun
       case 'account':
         return <AccountSettingsPage />;
+
+      // Modul Perkuliahan
+      case 'informasi-kehadiran':
+        return <InformasiKehadiran />;  
 
       // Tampilkan NotFoundPage jika tab tidak dikenali
       default:
