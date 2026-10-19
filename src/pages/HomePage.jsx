@@ -13,7 +13,7 @@ import {
   Calendar,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
+  GraduationCap,
   Award,
   AlertCircle
 } from 'lucide-react';
@@ -33,7 +33,7 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1">
             <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-sky-300 text-[10px] sm:text-[11px] font-medium">
-              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400 shrink-0" />
+              <GraduationCap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400 shrink-0" />
               <span className="truncate">Semester {studentData?.semester || 7} • TA 2026/2027 Ganjil</span>
             </div>
             <h1 className="text-lg sm:text-xl lg:text-2xl font-black tracking-tight">

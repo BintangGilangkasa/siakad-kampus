@@ -1,7 +1,7 @@
 import React from 'react';
 import { studentData } from '../../data/studentData';
 
-export const CetakBiodataPage = ({ setActiveTab }) => {
+const CetakBiodataPage = ({ setActiveTab }) => {
   const data = studentData;
 
   const handlePrint = () => {
@@ -10,9 +10,6 @@ export const CetakBiodataPage = ({ setActiveTab }) => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-12">
-      {/* ========================================================= */}
-      {/* 1. AKSI ATAS (Tombol Kembali & Cetak - Sembunyi Saat Cetak) */}
-      {/* ========================================================= */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm print:hidden">
         <div>
           <h1 className="text-lg font-bold text-slate-800">Cetak Biodata Mahasiswa</h1>
@@ -38,9 +35,6 @@ export const CetakBiodataPage = ({ setActiveTab }) => {
         </div>
       </div>
 
-      {/* ========================================================= */}
-      {/* 2. DOKUMEN BIODATA A4 (Area Cetak Resmi) */}
-      {/* ========================================================= */}
       <div className="bg-white p-8 sm:p-12 rounded-2xl shadow-md border border-slate-200 print:shadow-none print:border-none print:p-0 print:m-0 text-slate-900 font-sans">
         
         {/* KOP SURAT UNIVERSITAS */}
@@ -218,3 +212,5 @@ export const CetakBiodataPage = ({ setActiveTab }) => {
     </div>
   );
 };
+
+export default CetakBiodataPage;

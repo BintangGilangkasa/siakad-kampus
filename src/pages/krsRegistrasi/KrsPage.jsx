@@ -1,245 +1,327 @@
 import React, { useState } from 'react';
-import { availableCourses } from '../../data/krsData'
 import { studentData } from '../../data/studentData';
-import {
-  BookOpen,
-  Search,
-  Plus,
-  Trash2,
+import { availableCourses } from '../../data/krsData';
+import { 
+  Search, 
+  Clock, 
+  MapPin, 
+  User, 
+  Trash2, 
+  Plus, 
+  Check, 
+  AlertTriangle, 
+  BookOpen, 
   CheckCircle2,
-  AlertTriangle,
-  Clock,
-  MapPin,
-  User,
   Info
 } from 'lucide-react';
 
-export default function KrsPage() {
-  const maxSks = 24; // Batas SKS berdasarkan IPK
-  const [selectedCourses, setSelectedCourses] = useState([
-    availableCourses[0], // Web Modern
-    availableCourses[1], // AI & ML
-  ]);
+const KrsPage = ({ setActiveTab }) => {
+  const student = studentData;
+  const courses = availableCourses || [];
+
+  const isPaid = student.statusPembayaran === 'Lunas';
+  const maxSks = 24;
+
+  const [selectedIds, setSelectedIds] = useState(['INF301', 'INF302']);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Total SKS yang sudah diambil
-  const currentSks = selectedCourses.reduce((sum, item) => sum + item.sks, 0);
-
-  // Toggle Ambil Matkul
-  const handleSelectCourse = (course) => {
-    const isSelected = selectedCourses.some((c) => c.id === course.id);
-
-    if (isSelected) {
-      setSelectedCourses(selectedCourses.filter((c) => c.id !== course.id));
-    } else {
-      if (currentSks + course.sks > maxSks) {
-        alert(`Batas maksimum SKS (${maxSks} SKS) telah tercapai!`);
-        return;
-      }
-      if (course.filled >= course.quota) {
-        alert('Kuota kelas ini sudah penuh!');
-        return;
-      }
-      setSelectedCourses([...selectedCourses, course]);
-    }
-  };
-
-  const filteredCourses = availableCourses.filter(
-    (c) =>
-      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.code.toLowerCase().includes(searchTerm.toLowerCase())
+  const selectedCourses = courses.filter((c) =>
+    selectedIds.includes(c.id || c.kode || c.code)
   );
 
+  const totalSks = selectedCourses.reduce((sum, item) => sum + item.sks, 0);
+  const remainingSks = maxSks - totalSks;
+  const progressPercent = Math.min(100, Math.round((totalSks / maxSks) * 100));
+
+  const handleAddCourse = (course) => {
+    const courseId = course.id || course.kode || course.code;
+    if (selectedIds.includes(courseId)) return;
+
+    if (totalSks + course.sks > maxSks) {
+      alert(`Batas maksimum pengambilan adalah ${maxSks} SKS! Sisa SKS kamu: ${remainingSks} SKS.`);
+      return;
+    }
+
+    setSelectedIds([...selectedIds, courseId]);
+  };
+
+  const handleRemoveCourse = (courseId) => {
+    setSelectedIds(selectedIds.filter((id) => id !== courseId));
+  };
+
+  const handleSubmitKrs = () => {
+    if (!isPaid) {
+      alert('Pembayaran UKT belum terverifikasi! Silakan lakukan pembayaran UKT terlebih dahulu.');
+      if (setActiveTab) setActiveTab('keuangan');
+      return;
+    }
+
+    if (selectedCourses.length === 0) {
+      alert('Silakan pilih minimal 1 mata kuliah sebelum menyimpan KRS.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert(`KRS berhasil disimpan (${totalSks} SKS) dan diajukan ke Dosen PA: ${student.dosenPA}`);
+      if (setActiveTab) setActiveTab('status-registrasi');
+    }, 600);
+  };
+
+  const filteredCourses = courses.filter((course) => {
+    const name = course.name || course.namaMatkul || '';
+    const code = course.code || course.kode || '';
+    return (
+      name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      code.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
-    <div className="space-y-5 max-w-7xl mx-auto font-sans text-slate-800 w-full min-w-0">
-      
-      {/* Header Info Jatah SKS */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center space-x-2">
-            <BookOpen className="w-5 h-5 text-blue-600" />
-            <h1 className="text-lg font-black text-slate-900">Pengisian KRS Interaktif</h1>
+    <div className="space-y-6 max-w-7xl mx-auto pb-12 font-sans">
+      {/* 1. PERINGATAN UKT BELUM LUNAS */}
+      {!isPaid && (
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-sm font-bold text-amber-900">
+                Status Pembayaran UKT: Belum Terverifikasi Lunas
+              </h3>
+              <p className="text-xs text-amber-800 mt-0.5">
+                Kamu dapat memilih draf mata kuliah, tetapi penguncian KRS memerlukan pelunasan UKT.
+              </p>
+            </div>
           </div>
-          <p className="text-xs text-slate-500">
-            Jatah Maksimum SKS Semester Ini: <strong className="text-slate-800">{maxSks} SKS</strong> (Berdasarkan IPK {studentData?.ipk || 3.88})
+          {setActiveTab && (
+            <button
+              onClick={() => setActiveTab('keuangan')}
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold shrink-0 transition"
+            >
+              Bayar UKT Sekarang →
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* 2. HEADER & INDIKATOR KAPASITAS SKS */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+              Tahap 3: Input & Penguncian KRS
+            </span>
+            <span className="text-xs text-slate-500 font-medium">
+              Semester {student.semester} ({student.academicYear})
+            </span>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <BookOpen className="w-6 h-6 text-blue-600" />
+            <span>Pengisian KRS Interaktif</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Jatah Maksimum SKS Semester Ini: <strong className="text-slate-800">{maxSks} SKS</strong> (Berdasarkan IPK {student.ipk})
           </p>
         </div>
 
-        {/* Indikator SKS Real-time */}
-        <div className="w-full md:w-64 bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
-          <div className="flex justify-between text-xs font-bold">
-            <span className="text-slate-600">Terpakai: {currentSks} SKS</span>
-            <span className={maxSks - currentSks < 3 ? 'text-amber-600' : 'text-emerald-600'}>
-              Sisa: {maxSks - currentSks} SKS
+        {/* Dynamic Progress Bar */}
+        <div className="w-full lg:w-80 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+          <div className="flex justify-between items-center text-xs">
+            <span className="text-slate-600 font-medium">
+              Terpakai: <strong className="text-blue-700">{totalSks} SKS</strong>
+            </span>
+            <span className="text-slate-600 font-medium">
+              Sisa: <strong className="text-emerald-700">{remainingSks} SKS</strong>
             </span>
           </div>
           <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
-                currentSks === maxSks ? 'bg-amber-500' : 'bg-blue-600'
+                totalSks > maxSks ? 'bg-rose-500' : 'bg-blue-600'
               }`}
-              style={{ width: `${(currentSks / maxSks) * 100}%` }}
+              style={{ width: `${progressPercent}%` }}
             ></div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
-        {/* KOLOM KIRI (7 Kolom): Daftar Penawaran Matkul */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
-            
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <h2 className="font-extrabold text-sm text-slate-800">Penawaran Mata Kuliah</h2>
-              
-              <div className="relative w-full sm:w-56">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-                <input
-                  type="text"
-                  placeholder="Cari kode / mata kuliah..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 rounded-xl text-xs bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                />
-              </div>
+      {/* 3. LAYOUT UTAMA (DAFTAR MATKUL & PANEL DRAF) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* KOLOM KIRI: DAFAR MATA KULIAH */}
+        <div className="lg:col-span-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <h2 className="text-base font-bold text-slate-900">
+              Penawaran Mata Kuliah & Jadwal
+            </h2>
+            <div className="relative w-full sm:w-64">
+              <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Cari kode / mata kuliah..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
             </div>
+          </div>
 
-            {/* List Penawaran */}
-            <div className="space-y-2.5">
-              {filteredCourses.map((course) => {
-                const isSelected = selectedCourses.some((c) => c.id === course.id);
-                const isFull = course.filled >= course.quota;
+          <div className="space-y-3">
+            {filteredCourses.length > 0 ? (
+              filteredCourses.map((course) => {
+                const courseId = course.id || course.kode || course.code;
+                const isSelected = selectedIds.includes(courseId);
+                const isFull = (course.terisi || course.filled) >= (course.kuota || course.quota);
 
                 return (
                   <div
-                    key={course.id}
-                    className={`p-3.5 rounded-xl border transition space-y-2 ${
+                    key={courseId}
+                    className={`p-4 rounded-xl border transition-all duration-200 ${
                       isSelected
-                        ? 'bg-blue-50/60 border-blue-300'
-                        : 'bg-slate-50 border-slate-200/80 hover:border-slate-300'
+                        ? 'border-blue-300 bg-blue-50/40 shadow-sm'
+                        : 'border-slate-200 bg-white hover:border-slate-300'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-slate-200 text-slate-700 rounded">
-                            {course.code}
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[11px] font-mono font-bold">
+                            {course.code || course.kode}
                           </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-100 text-blue-700 rounded">
-                            Kelas {course.class}
+                          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-[11px] font-bold">
+                            Kelas {course.class || course.kelas || 'A'}
                           </span>
-                          <span className="text-xs font-extrabold text-slate-800">{course.sks} SKS</span>
+                          <span className="px-2 py-0.5 bg-slate-800 text-white rounded text-[11px] font-bold">
+                            {course.sks} SKS
+                          </span>
                         </div>
-                        <h3 className="font-bold text-slate-900 text-xs sm:text-sm mt-1">{course.name}</h3>
+
+                        <h3 className="text-sm font-bold text-slate-900">
+                          {course.name || course.namaMatkul}
+                        </h3>
+
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-1">
+                          <span className="flex items-center gap-1.5 text-slate-700 font-medium">
+                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            {course.day || course.hari}, {course.time || course.jam}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                            {course.room || course.ruang}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <User className="w-3.5 h-3.5 text-slate-400" />
+                            {course.lecturer || course.dosen}
+                          </span>
+                        </div>
                       </div>
 
-                      <button
-                        onClick={() => handleSelectCourse(course)}
-                        disabled={isFull && !isSelected}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1 shrink-0 ${
-                          isSelected
-                            ? 'bg-rose-100 text-rose-700 hover:bg-rose-200'
-                            : isFull
-                            ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                            : 'bg-blue-600 text-white hover:bg-blue-500'
-                        }`}
-                      >
+                      <div className="self-end sm:self-center shrink-0">
                         {isSelected ? (
-                          <>
+                          <button
+                            onClick={() => handleRemoveCourse(courseId)}
+                            className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-semibold transition flex items-center gap-1.5"
+                          >
                             <Trash2 className="w-3.5 h-3.5" />
                             <span>Batal</span>
-                          </>
+                          </button>
                         ) : isFull ? (
-                          <span>Penuh</span>
+                          <span className="px-4 py-2 bg-slate-100 text-slate-400 rounded-xl text-xs font-semibold block text-center">
+                            Penuh
+                          </span>
                         ) : (
-                          <>
+                          <button
+                            onClick={() => handleAddCourse(course)}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition shadow-sm flex items-center gap-1.5"
+                          >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Ambil</span>
-                          </>
+                          </button>
                         )}
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 text-[10px] text-slate-500 pt-1.5 border-t border-slate-200/60">
-                      <p className="flex items-center space-x-1 truncate">
-                        <Clock className="w-3 h-3 text-slate-400 shrink-0" />
-                        <span className="truncate">{course.schedule}</span>
-                      </p>
-                      <p className="flex items-center space-x-1 truncate">
-                        <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                        <span className="truncate">{course.room}</span>
-                      </p>
-                      <p className="flex items-center space-x-1 truncate">
-                        <User className="w-3 h-3 text-slate-400 shrink-0" />
-                        <span className="truncate">{course.lecturer}</span>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 );
-              })}
-            </div>
-
+              })
+            ) : (
+              <div className="text-center py-8 text-slate-500 text-xs">
+                Mata kuliah tidak ditemukan.
+              </div>
+            )}
           </div>
         </div>
 
-        {/* KOLOM KANAN (5 Kolom): Ringkasan KRS Terpilih */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5 sticky top-20">
-            
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="font-extrabold text-sm text-slate-800">KRS Ditambahkan ({selectedCourses.length})</h2>
-              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100">
-                Total: {currentSks} SKS
-              </span>
-            </div>
+        {/* KOLOM KANAN: RINGKASAN KRS DITAMBAHKAN */}
+        <div className="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 sticky top-6">
+          <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+            <h2 className="text-base font-bold text-slate-900">
+              KRS Ditambahkan ({selectedCourses.length})
+            </h2>
+            <span className="text-xs font-extrabold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+              Total: {totalSks} SKS
+            </span>
+          </div>
 
-            {/* List Pilihan */}
-            <div className="space-y-2 max-h-80 overflow-y-auto pr-1 scrollbar-thin">
-              {selectedCourses.map((item) => (
-                <div key={item.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2 text-xs">
-                  <div className="min-w-0">
-                    <p className="font-bold text-slate-800 text-xs truncate">{item.name}</p>
-                    <p className="text-[10px] text-slate-400 font-mono">
-                      {item.code} • Kelas {item.class} • {item.sks} SKS
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleSelectCourse(item)}
-                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition shrink-0"
-                    title="Hapus"
+          <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+            {selectedCourses.length > 0 ? (
+              selectedCourses.map((course) => {
+                const courseId = course.id || course.kode || course.code;
+                return (
+                  <div
+                    key={courseId}
+                    className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-start gap-2 hover:bg-slate-100/80 transition"
                   >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-slate-900 truncate">
+                        {course.name || course.namaMatkul}
+                      </h4>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        {course.code || course.kode} • Kelas {course.class || course.kelas || 'A'} •{' '}
+                        <strong className="text-slate-700">{course.sks} SKS</strong>
+                      </p>
+                    </div>
 
-              {selectedCourses.length === 0 && (
-                <div className="p-6 text-center text-slate-400 text-xs bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                  Belum ada mata kuliah yang dipilih.
-                </div>
-              )}
-            </div>
+                    <button
+                      onClick={() => handleRemoveCourse(courseId)}
+                      title="Hapus Mata Kuliah"
+                      className="text-slate-400 hover:text-rose-600 p-1 text-xs transition"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-8 text-slate-400 text-xs">
+                Belum ada mata kuliah yang diambil.
+              </div>
+            )}
+          </div>
 
-            {/* Tombol Simpan KRS */}
+          <div className="pt-2">
             <button
-              onClick={() => alert('KRS Berhasil Disimpan!')}
-              disabled={selectedCourses.length === 0}
-              className={`w-full py-2.5 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center space-x-2 ${
-                selectedCourses.length > 0
-                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                  : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              onClick={handleSubmitKrs}
+              disabled={isSubmitting || selectedCourses.length === 0}
+              className={`w-full py-3 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center gap-2 ${
+                isSubmitting || selectedCourses.length === 0
+                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                  : 'bg-emerald-600 hover:bg-emerald-700 text-white'
               }`}
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>Simpan Kartu Rencana Studi (KRS)</span>
+              <span>{isSubmitting ? 'Menyimpan...' : 'Simpan Kartu Rencana Studi'}</span>
             </button>
 
+            <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 text-center mt-2.5">
+              <Info className="w-3.5 h-3.5 shrink-0" />
+              <span>KRS akan diteruskan ke Dosen PA ({student.dosenPA}).</span>
+            </div>
           </div>
         </div>
-
       </div>
-
     </div>
   );
-}
+};
+
+export default KrsPage;
