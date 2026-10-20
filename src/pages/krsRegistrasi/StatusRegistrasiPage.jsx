@@ -60,101 +60,101 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
   ];
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-12 font-sans">
+    <div className="space-y-4 sm:space-y-6 max-w-full mx-auto pb-12 font-sans w-full overflow-x-hidden px-1 sm:px-0">
+      
       {/* 1. HEADER HALAMAN */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4">
+        <div className="w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+            <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
               Tahun Akademik {student.academicYear || 'Ganjil 2026/2027'}
             </span>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
               {student.statusAkademik || 'Aktif Kuliah'}
             </span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2.5">
-            <FileText className="w-6 h-6 text-blue-600" />
+          <h1 className="text-base sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 shrink-0" />
             <span>Status Registrasi & ACC KRS</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-[11px] sm:text-sm text-slate-500 mt-0.5 leading-relaxed">
             Pantau progres persetujuan KRS dan tahapan registrasi akademik kamu semester ini.
           </p>
         </div>
-
-        {statusAccPA === 'Disetujui' && setActiveTab && (
-          <button
-            onClick={() => setActiveTab('cetak-krs')}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition shadow-sm flex items-center gap-2"
-          >
-            <Printer className="w-4 h-4" />
-            <span>Cetak Lembar KRS</span>
-          </button>
-        )}
       </div>
 
-      {/* 2. TIMELINE PROGRES */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-6">
+      {/* 2. TIMELINE PROGRES (FULL HORIZONTAL LAYOUT) */}
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h2 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
           Alur Registrasi Akademik
         </h2>
 
-        <div className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10">
-            {steps.map((step) => {
-              const isComplete = step.status === 'complete';
-              const isCurrent = step.status === 'current';
+        {/* Container Horizontal Scrollable di HP */}
+        <div className="overflow-x-auto pb-2 scrollbar-none">
+          <div className="relative min-w-137.5 sm:min-w-0">
+            {/* Garis Konektor Horizontal */}
+            <div className="absolute top-4 sm:top-5 left-8 right-8 h-0.5 bg-slate-200 z-0"></div>
 
-              return (
-                <div
-                  key={step.id}
-                  className="flex md:flex-col items-start md:items-center text-left md:text-center gap-3 md:gap-2 p-3 md:p-0 rounded-xl bg-slate-50 md:bg-transparent border border-slate-100 md:border-none"
-                >
+            <div className="grid grid-cols-5 gap-2 relative z-10">
+              {steps.map((step) => {
+                const isComplete = step.status === 'complete';
+                const isCurrent = step.status === 'current';
+
+                return (
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-all ${
-                      isComplete
-                        ? 'bg-emerald-600 text-white shadow-md shadow-emerald-100'
-                        : isCurrent
-                        ? 'bg-amber-500 text-white ring-4 ring-amber-100 animate-pulse'
-                        : 'bg-slate-200 text-slate-500'
-                    }`}
+                    key={step.id}
+                    className="flex flex-col items-center text-center space-y-1.5 px-1"
                   >
-                    {isComplete ? <Check className="w-5 h-5" /> : step.id}
-                  </div>
-
-                  <div>
-                    <h3
-                      className={`text-xs sm:text-sm font-bold ${
+                    {/* Circle Indicator */}
+                    <div
+                      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 transition-all ${
                         isComplete
-                          ? 'text-slate-900'
+                          ? 'bg-emerald-600 text-white shadow-md shadow-emerald-100'
                           : isCurrent
-                          ? 'text-amber-700'
-                          : 'text-slate-400'
+                          ? 'bg-amber-500 text-white ring-4 ring-amber-100 animate-pulse'
+                          : 'bg-slate-200 text-slate-500'
                       }`}
                     >
-                      {step.title}
-                    </h3>
-                    <p className="text-[11px] text-slate-500 mt-0.5 leading-tight">
-                      {step.description}
-                    </p>
+                      {isComplete ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : step.id}
+                    </div>
+
+                    {/* Step Title & Description */}
+                    <div>
+                      <h3
+                        className={`text-[11px] sm:text-xs font-bold leading-tight ${
+                          isComplete
+                            ? 'text-slate-900'
+                            : isCurrent
+                            ? 'text-amber-700'
+                            : 'text-slate-400'
+                        }`}
+                      >
+                        {step.title}
+                      </h3>
+                      <p className="text-[9px] sm:text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-2">
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
       {/* 3. KARTU DETAIL STATUS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        
         {/* Status Pembayaran UKT */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <div className="flex justify-between items-center mb-3 gap-2">
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 Tahap 1 & 2
               </span>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold flex items-center gap-1 shrink-0 ${
                   statusPembayaran === 'Lunas'
                     ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                     : 'bg-rose-50 text-rose-800 border border-rose-200'
@@ -174,22 +174,22 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
               </span>
             </div>
 
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-slate-700" />
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700 shrink-0" />
               <span>Keuangan & UKT Semester</span>
             </h3>
             <p className="text-xs text-slate-500 mt-1">
               Pembayaran UKT membuka akses untuk melakukan pengisian dan penguncian mata kuliah di KRS.
             </p>
 
-            <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5 text-xs">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Status Tagihan:</span>
-                <span className="font-semibold text-slate-800">Lunas / Terverifikasi</span>
+            <div className="mt-3 sm:mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2 text-xs">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-slate-500 shrink-0">Status Tagihan:</span>
+                <span className="font-semibold text-slate-800 text-right truncate">Lunas / Terverifikasi</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Batas Pengisian KRS:</span>
-                <span className="font-semibold text-slate-800">{student.batasKrs || '20 Okt 2026'}</span>
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-slate-500 shrink-0">Batas Pengisian KRS:</span>
+                <span className="font-semibold text-slate-800 text-right">{student.batasKrs || '20 Okt 2026'}</span>
               </div>
             </div>
           </div>
@@ -197,7 +197,7 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
           {statusPembayaran !== 'Lunas' && setActiveTab && (
             <button
               onClick={() => setActiveTab('keuangan')}
-              className="mt-4 w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5"
+              className="mt-4 w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5"
             >
               <span>Bayar UKT Sekarang</span>
               <ArrowRight className="w-4 h-4" />
@@ -206,14 +206,14 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
         </div>
 
         {/* Status ACC Dosen PA */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <div className="flex justify-between items-center mb-3 gap-2">
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 Tahap 4
               </span>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold flex items-center gap-1 shrink-0 ${
                   statusAccPA === 'Disetujui'
                     ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                     : statusAccPA === 'Pending'
@@ -240,33 +240,33 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
               </span>
             </div>
 
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <UserCheck className="w-5 h-5 text-slate-700" />
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <UserCheck className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700 shrink-0" />
               <span>Persetujuan Dosen PA</span>
             </h3>
             <p className="text-xs text-slate-500 mt-1">
               Dosen Penasihat Akademik (PA) memeriksa kesesuaian beban SKS dan mata kuliah yang kamu ambil.
             </p>
 
-            <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5 text-xs">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Dosen PA:</span>
-                <span className="font-semibold text-slate-800">{student.dosenPA}</span>
+            <div className="mt-3 sm:mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2 text-xs">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-slate-500 shrink-0">Dosen PA:</span>
+                <span className="font-semibold text-slate-800 text-right truncate">{student.dosenPA}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Total Matkul & SKS:</span>
-                <span className="font-semibold text-slate-800">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-slate-500 shrink-0">Total Matkul & SKS:</span>
+                <span className="font-semibold text-slate-800 text-right">
                   {courses.length} Matkul ({totalSks} SKS)
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-col sm:flex-row gap-2">
             {setActiveTab && (
               <button
                 onClick={() => setActiveTab('isi-krs')}
-                className="flex-1 py-2 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-semibold transition"
+                className="flex-1 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-semibold transition text-center"
               >
                 Lihat KRS Saya
               </button>
@@ -274,7 +274,7 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
             {statusAccPA === 'Disetujui' && setActiveTab && (
               <button
                 onClick={() => setActiveTab('cetak-krs')}
-                className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5"
               >
                 <Printer className="w-4 h-4" />
                 <span>Cetak KRS</span>
@@ -285,23 +285,23 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
       </div>
 
       {/* 4. RINGKASAN MATA KULIAH */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
           <div>
-            <h3 className="text-base font-bold text-slate-900">
+            <h3 className="text-sm sm:text-base font-bold text-slate-900">
               Daftar Mata Kuliah dalam Pengajuan KRS
             </h3>
             <p className="text-xs text-slate-500">
               Rincian jadwal dan mata kuliah yang menunggu / telah disetujui Dosen PA.
             </p>
           </div>
-          <span className="px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">
+          <span className="px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold shrink-0">
             Total SKS: {totalSks} SKS
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full text-xs text-left border-collapse min-w-150">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                 <th className="py-2.5 px-3">Kode</th>
@@ -315,10 +315,10 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
             <tbody className="divide-y divide-slate-100">
               {courses.map((course, idx) => (
                 <tr key={course.id || idx} className="hover:bg-slate-50/80">
-                  <td className="py-2.5 px-3 font-mono font-semibold text-slate-800">
+                  <td className="py-2.5 px-3 font-mono font-semibold text-slate-800 whitespace-nowrap">
                     {course.code || course.kode}
                   </td>
-                  <td className="py-2.5 px-3 font-medium text-slate-900">
+                  <td className="py-2.5 px-3 font-bold text-slate-900 whitespace-nowrap">
                     {course.name || course.namaMatkul}
                   </td>
                   <td className="py-2.5 px-3 text-center font-bold text-blue-600">
@@ -327,16 +327,15 @@ const StatusRegistrasiPage = ({ setActiveTab }) => {
                   <td className="py-2.5 px-3 text-center">
                     {course.class || course.kelas || 'A'}
                   </td>
-                  <td className="py-2.5 px-3 text-slate-600">
-                    <span className="font-medium text-slate-800">
+                  <td className="py-2.5 px-3 text-slate-600 whitespace-nowrap">
+                    <span className="font-medium text-slate-800 block">
                       {course.day || course.hari} ({course.time || course.jam})
                     </span>
-                    <br />
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-slate-400 block">
                       {course.room || course.ruang}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 text-slate-700">
+                  <td className="py-2.5 px-3 text-slate-700 whitespace-nowrap">
                     {course.lecturer || course.dosen}
                   </td>
                 </tr>

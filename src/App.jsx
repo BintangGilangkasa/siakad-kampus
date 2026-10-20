@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
+import LoginPage from '../src/pages/LoginPage';
 import HomePage from './pages/HomePage';
 
-// Biodata
+import { studentData as initialStudentData } from './data/studentData';
+
+// Biodata & Profil
 import BiodataPage from './pages/profilAkun/BiodataPage';
-import CetakBiodataPage from "./pages/profilAkun/CetakBiodataPage";
+import StatusAkademikPage from './pages/profilAkun/StatusAkademikPage';
+import GantiPasswordPage from './pages/profilAkun/GantiPasswordPage';
 import AccountSettingsPage from './pages/profilAkun/AccountSettingsPage';
+import CetakBiodataPage from "./pages/profilAkun/CetakBiodataPage";
 
 // KRS Registrasi
 import StatusRegistrasiPage from './pages/krsRegistrasi/StatusRegistrasiPage';
@@ -28,18 +33,57 @@ import InformasiKehadiran from './pages/perkuliahan/InformasiKehadiran';
 import JadwalUjian from './pages/perkuliahan/JadwalUjian';
 import InformasiRemidi from './pages/perkuliahan/InformasiRemidi';
 import JadwalKuliah from './pages/perkuliahan/JadwalKuliah';
+// Informasi Layanan
+import NewsInfoPage from './pages/informasiLayanan/NewsInfoPage';
+import BeasiswaPage from './pages/informasiLayanan/BeasiswaPage';
 
+// Helpdesk
+import HelpdeskPage from './pages/helpdesk/HelpDeskPage';
+
+// Not Found Page
 //Halaman tidak ditemukan
 import NotFoundPage from './pages/NotFoundPage';
 
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [activeTab, setActiveTab] = useState('beranda');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
-    alert('Logout berhasil!');
+  // State Global Student Data dengan Penyimpanan LocalStorage
+  const [studentData, setStudentData] = useState(() => {
+    const saved = localStorage.getItem('siakad_student_data');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return initialStudentData;
+      }
+    }
+    return initialStudentData;
+  });
+
+  // Handler Update Data Mahasiswa
+  const handleUpdateStudentData = (newData) => {
+    setStudentData((prev) => {
+      const updated = { ...prev, ...newData };
+      localStorage.setItem('siakad_student_data', JSON.stringify(updated));
+      return updated;
+    });
   };
+
+  // Fungsi Logout Resmi
+  const handleLogout = () => {
+    const isConfirmed = window.confirm('Apakah Anda yakin ingin keluar dari sistem SIAKAD?');
+    if (isConfirmed) {
+      setIsLoggedIn(false);
+    }
+  };
+
+  // Jika belum login, tampilkan Halaman Login
+  if (!isLoggedIn) {
+    return <LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />;
+  }
 
   const handleOpenKrsModal = () => {
     setActiveTab('input-penawaran');
@@ -53,26 +97,46 @@ export default function App() {
           <HomePage
             onOpenKrsModal={handleOpenKrsModal}
             setActiveTab={setActiveTab}
+            studentData={studentData}
           />
         );
       
       // Modul Profil & Biodata
+      case 'biodata-dikti':
       case 'biodata':
-        return <BiodataPage setActiveTab={setActiveTab} />;
+        return <BiodataPage setActiveTab={setActiveTab} studentData={studentData} />;
+
+      case 'update-biodata':
+        return (
+          <UpdateBiodataPage
+            studentData={studentData}
+            onUpdateStudentData={handleUpdateStudentData}
+            setActiveTab={setActiveTab}
+          />
+        );
 
       case 'cetak-biodata':
-        return <CetakBiodataPage setActiveTab={setActiveTab} />;   
+        return <CetakBiodataPage setActiveTab={setActiveTab} studentData={studentData} />; 
+
+      case 'status-akademik':
+        return <StatusAkademikPage setActiveTab={setActiveTab} studentData={studentData} />;
       
-      // Modul KRS
+      case 'pengaturan-akun':
+        return <AccountSettingsPage setActiveTab={setActiveTab} studentData={studentData} />;
+
+      case 'ganti-password':
+        return <GantiPasswordPage setActiveTab={setActiveTab} />;
+
+      // Modul KRS & Registrasi
       case 'isi-krs':
       case 'input-penawaran':
         return <KrsPage />;
       
       case 'lihat-penawaran':
-        return <LihatPenawaranPage setActiveTab={setActiveTab} />
+        return <LihatPenawaranPage setActiveTab={setActiveTab} />;
 
       case 'status-registrasi':
-        return <StatusRegistrasiPage setActiveTab={setActiveTab} />
+        return <StatusRegistrasiPage setActiveTab={setActiveTab} />;
 
       case 'cetak-krs':
         return <CetakKrsPage />;
@@ -86,10 +150,6 @@ export default function App() {
 
       case 'transkrip-sementara':
         return <TranskripSementaraPage />;
-
-      // Modul Pengaturan Akun
-      case 'account':
-        return <AccountSettingsPage />;
 
       // Modul Perkuliahan
       case 'informasi-kehadiran':
@@ -105,11 +165,27 @@ export default function App() {
         return <JadwalKuliah />;
 
       // Modul Keuangan / UKT
-      case  'tagihan-ukt':
-        return <TagihanUktPage setActiveTab={setActiveTab} />
+      case 'tagihan-ukt':
+      case 'informasi-tagihan-ukt':
+      case 'informasi-tagihan':
+        return <TagihanUktPage setActiveTab={setActiveTab} />;
       
       case 'rekap-pembayaran':
-        return <RekapPembayaranPage setActiveTab={setActiveTab} />
+        return <RekapPembayaranPage setActiveTab={setActiveTab} />;
+
+      // Info Beasiswa & Layanan
+      case 'news-info':
+      case 'berita-kampus':
+        return <NewsInfoPage setActiveTab={setActiveTab} />;
+      
+      case 'info-beasiswa':
+      case 'informasi-beasiswa':
+      case 'beasiswa':
+        return <BeasiswaPage setActiveTab={setActiveTab} />;
+
+      // Helpdesk
+      case 'helpdesk':
+        return <HelpdeskPage setActiveTab={setActiveTab} />;
 
       // Tampilkan NotFoundPage jika tab tidak dikenali
       default:
@@ -118,7 +194,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100 font-sans text-slate-800">
+    <div className="flex h-screen min-h-screen bg-slate-100 font-sans text-slate-800">
       {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -133,6 +209,8 @@ export default function App() {
         <Navbar
           onLogout={handleLogout}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          setActiveTab={setActiveTab}
+          studentData={studentData}
         />
 
         {/* Dynamic Page Content */}

@@ -4,18 +4,17 @@ import {
   User,
   FileText,
   Printer,
-  CheckCircle2,
-  Building,
   GraduationCap,
-  MapPin,
-  Phone,
-  Mail,
   ShieldCheck
 } from 'lucide-react';
 
-export default function BiodataPage() {
+export default function BiodataPage({ setActiveTab}) {
   const handlePrint = () => {
-    window.print();
+    if (setActiveTab) {
+      setActiveTab('cetak-biodata')
+    } else {
+      window.print();
+    }
   };
 
   return (
@@ -36,7 +35,7 @@ export default function BiodataPage() {
         {/* Tombol Cetak / Export PDF */}
         <button
           onClick={handlePrint}
-          className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-green-600 active:bg-slate-950 text-white font-bold text-xs shadow-md transition flex items-center justify-center space-x-2 shrink-0"
+          className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition flex items-center justify-center space-x-2 shrink-0"
         >
           <Printer className="w-4 h-4" />
           <span>Cetak Biodata (PDF)</span>
@@ -125,8 +124,12 @@ export default function BiodataPage() {
               <span className="col-span-2 font-bold text-slate-800">{studentData?.prodi || 'S1 - Sains Data'}</span>
             </div>
             <div className="grid grid-cols-3 gap-2">
+              <span className="text-slate-400 font-medium">Semester</span>
+              <span className="col-span-2 text-slate-700">{studentData?.semester || 'semester'}</span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
               <span className="text-slate-400 font-medium">Angkatan</span>
-              <span className="col-span-2 text-slate-700">2023 (Semester 7)</span>
+              <span className="col-span-2 text-slate-700">{studentData?.angkatan || '****'}</span>
             </div>
             <div className="grid grid-cols-3 gap-2">
               <span className="text-slate-400 font-medium">Status Mahasiswa</span>
@@ -137,8 +140,8 @@ export default function BiodataPage() {
               </span>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              <span className="text-slate-400 font-medium">Dosen PA</span>
-              <span className="col-span-2 text-slate-700">{studentData?.dosenPA || 'Dr. Hendra Kusuma, M.Si.'}</span>
+              <span className="text-slate-400 font-medium">Dosen Pembimbing Akademik</span>
+              <span className="col-span-2 font-bold text-slate-700">{studentData?.dosenPA || '-'}</span>
             </div>
           </div>
         </div>
