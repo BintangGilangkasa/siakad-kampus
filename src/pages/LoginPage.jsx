@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputField from '../components/inputField';
+import InputField from '../components/InputField';
 import Button from '../components/Button';
 import { User, Lock, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
 
