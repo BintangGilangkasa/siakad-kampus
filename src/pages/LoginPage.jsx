@@ -69,7 +69,7 @@ export default function LoginPage({ onLoginSuccess, onLogin }) {
             <h1 className="text-xl font-extrabold text-slate-700 tracking-tight">
               SIAKAD<span className="text-blue-600">.NextGen</span>
             </h1>
-            <p className="text-xs text-slate-500 font-medium">Selamat Datang Kembali!</p>
+            <p className="text-xs text-white font-medium">Selamat Datang Kembali!</p>
           </div>
         </div>
 
@@ -86,7 +86,7 @@ export default function LoginPage({ onLoginSuccess, onLogin }) {
           <InputField
             label="Nomor Induk Mahasiswa (NIM)"
             type="text"
-            placeholder="Masukkan NIM Anda..."
+            placeholder="Masukkan NIM"
             value={nim}
             onChange={(e) => setNim(e.target.value)}
             icon={User}
@@ -104,7 +104,7 @@ export default function LoginPage({ onLoginSuccess, onLogin }) {
           />
 
           <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center space-x-2 cursor-pointer text-slate-600">
+            <label className="flex items-center space-x-2 cursor-pointer text-white">
               <input
                 type="checkbox"
                 checked={rememberMe}
@@ -139,7 +139,7 @@ export default function LoginPage({ onLoginSuccess, onLogin }) {
         </form>
 
         {/* Footer Ringkas */}
-        <div className="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-400 flex items-center justify-center space-x-1.5">
+        <div className="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-white flex items-center justify-center space-x-1.5">
           <ShieldCheck className="w-4 h-4 text-emerald-500" />
           <span>SIAKAD NextGen v2.0</span>
         </div>

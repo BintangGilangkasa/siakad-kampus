@@ -19,7 +19,7 @@ import KrsPage from './pages/krsRegistrasi/KrsPage';
 import CetakKrsPage from './pages/krsRegistrasi/CetakKrsPage';
 import LihatPenawaranPage from './pages/krsRegistrasi/LihatPenawaranPage';
 
-//KHS & Transkrip
+// KHS & Transkrip
 import SejarahIpPage from './pages/khsTranskrip/SejarahIpPage';
 import LihatKhsPage from './pages/khsTranskrip/LihatKhsPage';
 import TranskripSementaraPage from './pages/khsTranskrip/TranskripSementaraPage';
@@ -33,6 +33,7 @@ import InformasiKehadiran from './pages/perkuliahan/InformasiKehadiran';
 import JadwalUjian from './pages/perkuliahan/JadwalUjian';
 import InformasiRemidi from './pages/perkuliahan/InformasiRemidi';
 import JadwalKuliah from './pages/perkuliahan/JadwalKuliah';
+
 // Informasi Layanan
 import NewsInfoPage from './pages/informasiLayanan/NewsInfoPage';
 import BeasiswaPage from './pages/informasiLayanan/BeasiswaPage';
@@ -41,9 +42,7 @@ import BeasiswaPage from './pages/informasiLayanan/BeasiswaPage';
 import HelpdeskPage from './pages/helpdesk/HelpDeskPage';
 
 // Not Found Page
-//Halaman tidak ditemukan
 import NotFoundPage from './pages/NotFoundPage';
-
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -141,15 +140,21 @@ export default function App() {
       case 'cetak-krs':
         return <CetakKrsPage />;
 
-      //KHS & Transkrip
-      case 'sejarah-ip':
-        return <SejarahIpPage />;
-
+      // Modul KHS & Transkrip (ditambahkan alias pendukung dari Sidebar)
       case 'lihat-khs':
-        return <LihatKhsPage />;
+      case 'khs':
+      case 'khs-mahasiswa':
+        return <LihatKhsPage setActiveTab={setActiveTab} studentData={studentData} />;
 
       case 'transkrip-sementara':
-        return <TranskripSementaraPage />;
+      case 'transkrip':
+      case 'transkrip-nilai':
+        return <TranskripSementaraPage setActiveTab={setActiveTab} studentData={studentData} />;
+
+      case 'sejarah-ip':
+      case 'sejarah-ipk':
+      case 'ipk-ips':
+        return <SejarahIpPage setActiveTab={setActiveTab} studentData={studentData} />;
 
       // Modul Perkuliahan
       case 'informasi-kehadiran':
@@ -178,9 +183,7 @@ export default function App() {
       case 'berita-kampus':
         return <NewsInfoPage setActiveTab={setActiveTab} />;
       
-      case 'info-beasiswa':
-      case 'informasi-beasiswa':
-      case 'beasiswa':
+      case 'beasiswa-prestasi':
         return <BeasiswaPage setActiveTab={setActiveTab} />;
 
       // Helpdesk

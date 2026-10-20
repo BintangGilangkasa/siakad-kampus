@@ -132,9 +132,6 @@ const HelpdeskPage = () => {
       {/* 1. HEADER BANNER HELPDESK */}
       <div className="bg-linear-to-r from-slate-900 via-blue-950 to-indigo-900 text-white p-4 sm:p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-blue-500/20 text-sky-300 border border-blue-400/30">
-            Pusat Layanan & Dukungan Mahasiswa
-          </span>
           <h1 className="text-base sm:text-2xl font-bold text-white mt-1 flex items-center gap-2">
             <Headphones className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400 shrink-0" />
             <span>Helpdesk & Layanan Pengaduan</span>

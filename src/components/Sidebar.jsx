@@ -68,8 +68,9 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       title: 'KHS & Transkrip',
       icon: GraduationCap,
       items: [
-        { id: 'khs-semester', label: 'KHS Per Semester', icon: Award },
-        { id: 'transkrip-nilai', label: 'Transkrip Nilai Akademik', icon: FileSpreadsheet },
+        { id: 'sejarah-ip', label: 'Sejarah IP', icon: Clock },
+        { id: 'lihat-khs', label: 'Lihat KHS / Kartu Studi', icon: Award },
+        { id: 'transkrip-sementara', label: 'Transkrip Sementara', icon: FileSpreadsheet },
       ],
     },
     {
