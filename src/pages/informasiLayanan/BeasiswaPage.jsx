@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { studentData } from '../../data/studentData';
-import { beasiswaList } from '../../data/beasiswalist';
+import { beasiswaList } from '../../data/beasiswaList';
 import { 
   GraduationCap, 
   Search, 
