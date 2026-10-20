@@ -1,9 +1,13 @@
-# TIM Push ML doang ga pernah IMMO
-# SIAKAD UIN Salatiga - Student Academic Portal
+# Tim Push ML doang ga pernah IMMO
+# SIAKAD.NextGen UIN Salatiga - Student Academic Portal
 
 ## Anggota Tim
 1. Bintang Gilangkasa Syailendra
 2. Andi Wildan Alvin Ulinnuha
+
+## Tampilan
+![Login](./public/images/login-siakad.png)
+![Dashboard](./public/images/dashboard.png)
 
 ## Latar Belakang
 Pengembangan platform **SIAKAD UIN Salatiga** ini didasari oleh keresahan terhadap sistem informasi akademik kampus eksisting yang dirasa kurang nyaman dari segi pengalaman pengguna (*user experience*) maupun tata letak visual (*user interface*). Beberapa kendala utama yang melatarbelakangi pengerjaan proyek ini antara lain:
@@ -70,17 +74,38 @@ siakad-uin-salatiga/
 │   ├── layouts/
 │   │   └── DashboardLayout.jsx
 │   ├── pages/
+│   │   ├── helpdesk/
+│   │   │   └── HelpDeskPage.jsx
 │   │   ├── informasiLayanan/
 │   │   │   ├── BeasiswaPage.jsx
 │   │   │   └── NewsInfoPage.jsx
 │   │   ├── keuangan/
+│   │   │   ├── CetakRekapPembayaranPage.jsx
 │   │   │   ├── RekapPembayaranPage.jsx
 │   │   │   └── TagihanUktPage.jsx
-│   │   └── profilAkun/
-│   │       ├── BiodataPage.jsx
-│   │       ├── CetakBiodataPage.jsx
-│   │       ├── GantiPasswordPage.jsx
-│   │       └── StatusAkademikPage.jsx
+│   │   ├── khsTranskrip/
+│   │   │   ├── LihatKhsPage.jsx
+│   │   │   ├── SejarahIpPage.jsx
+│   │   │   └── TranskripSementaraPage.jsx
+│   │   ├── krsRegistrasi/
+│   │   │   ├── CetakKrsPage.jsx
+│   │   │   ├── KrsPage.jsx
+│   │   │   ├── LihatPenawaranPage.jsx
+│   │   │   └── StatusRegistrasiPage.jsx
+│   │   ├── perkuliahan/
+│   │   │   ├── InformasiKehadiran.jsx
+│   │   │   ├── InformasiRemidi.jsx
+│   │   │   ├── JadwalKuliah.jsx
+│   │   │   └── JadwalUjian.jsx
+│   │   ├── profilAkun/
+│   │   │   ├── AccountSettingsPage.jsx
+│   │   │   ├── BiodataPage.jsx
+│   │   │   ├── CetakBiodataPage.jsx
+│   │   │   ├── GantiPasswordPage.jsx
+│   │   │   └── StatusAkademikPage.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── LoginPage.jsx
+│   │   └── NotFoundPage.jsx
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx

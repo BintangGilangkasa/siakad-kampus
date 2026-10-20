@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
+
+import LogoUin from '../assets/logo-uin.png'
+
 import { User, Lock, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
 
 export default function LoginPage({ onLoginSuccess, onLogin }) {
@@ -12,7 +15,6 @@ export default function LoginPage({ onLoginSuccess, onLogin }) {
 
   // Path gambar / assets
   const campusBgUrl = "/images/foto-kampus.png";
-  const logoCard = "src/assets/logo-uin.png";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,12 +60,12 @@ export default function LoginPage({ onLoginSuccess, onLogin }) {
       <div className="absolute inset-0 backdrop-blur-[1px]"></div>
 
       {/* Card Login */}
-      <div className="relative z-10 w-full max-w-md bg-white/40 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
+      <div className="relative z-10 w-full max-w-md bg-slate-300/40 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
         
         {/* Header Logo & Title */}
         <div className="text-center space-y-2.5 mb-6">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-linear-to-tr from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
-            <img src={logoCard} alt="Logo UIN" className="w-8 h-11 object-contain" />
+            <img src={LogoUin} alt="Logo UIN" className="w-8 h-11 object-contain" />
           </div>
           <div>
             <h1 className="text-xl font-extrabold text-slate-700 tracking-tight">

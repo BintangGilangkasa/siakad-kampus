@@ -45,7 +45,11 @@ import HelpdeskPage from './pages/helpdesk/HelpDeskPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // Sesi Login: Default membaca dari localStorage agar tidak langsung masuk dashboard
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('siakad_is_logged_in') === 'true';
+  });
+
   const [activeTab, setActiveTab] = useState('beranda');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -71,17 +75,24 @@ export default function App() {
     });
   };
 
+  // Handler Login Berhasil
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem('siakad_is_logged_in', 'true');
+  };
+
   // Fungsi Logout Resmi
   const handleLogout = () => {
     const isConfirmed = window.confirm('Apakah Anda yakin ingin keluar dari sistem SIAKAD?');
     if (isConfirmed) {
       setIsLoggedIn(false);
+      localStorage.removeItem('siakad_is_logged_in');
     }
   };
 
   // Jika belum login, tampilkan Halaman Login
   if (!isLoggedIn) {
-    return <LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />;
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
   }
 
   const handleOpenKrsModal = () => {
@@ -140,7 +151,7 @@ export default function App() {
       case 'cetak-krs':
         return <CetakKrsPage />;
 
-      // Modul KHS & Transkrip (ditambahkan alias pendukung dari Sidebar)
+      // Modul KHS & Transkrip
       case 'lihat-khs':
       case 'khs':
       case 'khs-mahasiswa':
@@ -184,6 +195,9 @@ export default function App() {
         return <NewsInfoPage setActiveTab={setActiveTab} />;
       
       case 'beasiswa-prestasi':
+      case 'info-beasiswa':
+      case 'informasi-beasiswa':
+      case 'beasiswa':
         return <BeasiswaPage setActiveTab={setActiveTab} />;
 
       // Helpdesk

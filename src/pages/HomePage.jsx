@@ -53,8 +53,6 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
   const totalMeetings = (attendanceList || []).reduce((acc, curr) => acc + curr.total, 0);
   const attendancePercentage = totalMeetings > 0 ? Math.round((totalPresent / totalMeetings) * 100) : 0;
 
-  const displayName = studentData?.name ? studentData.name.split(' ').slice(0, 2).join(' ') : 'Mahasiswa';
-
   // Handler Buka File Picker
   const handlePhotoClick = () => {
     if (fileInputRef.current) {
@@ -120,20 +118,22 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
         className="hidden"
       />
 
-      {/* 1. WELCOME BANNER UTAMA */}
-      <div className="bg-linear-to-r from-slate-900 via-indigo-950 to-blue-900 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg relative overflow-hidden">
-        <div className="absolute -right-10 -bottom-10 w-56 h-56 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      {/* 1. WELCOME BANNER UTAMA (Warna Diseragamkan) */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-linear-to-r from-blue-700 via-blue-600 to-indigo-700 p-4 sm:p-6 text-white shadow-lg">
+        {/* Dekorasional Lingkaran Transparan di Sisi Kanan */}
+        <div className="pointer-events-none absolute -right-8 -top-12 h-56 w-56 rounded-full border-28 border-white/10 sm:h-72 sm:w-72 sm:border-36" />
+        <div className="pointer-events-none absolute -bottom-20 right-16 h-48 w-48 rounded-full bg-white/10 sm:-bottom-24 sm:right-24 sm:h-60 sm:w-60" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center relative z-10">
 
           {/* SISI KIRI: FOTO PROFIL (PAS FOTO 3x4) & UCAPAN */}
           <div className="lg:col-span-7 flex flex-col sm:flex-row items-start sm:items-center gap-4">
 
-            {/* Foto Profil Pas Foto 3x4 & Tombol Ganti Foto (Tanpa Border) */}
+            {/* Foto Profil Pas Foto 3x4 & Tombol Ganti Foto */}
             <div className="relative shrink-0 flex flex-col items-center gap-2">
 
               {/* Frame Pas Foto 3x4 */}
-              <div className="w-20 sm:w-24 aspect-3/4 rounded-2xl bg-linear-to-tr from-blue-500 via-indigo-400 to-sky-300 p-0.5 shadow-xl overflow-hidden relative">
+              <div className="w-20 sm:w-24 aspect-3/4 rounded-2xl bg-white/20 p-0.5 shadow-xl overflow-hidden relative border border-white/30">
                 <div className="w-full h-full bg-slate-900 rounded-[14px] overflow-hidden relative flex items-center justify-center">
                   {photoSrc ? (
                     <img
@@ -154,13 +154,13 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
                 </div>
               </div>
 
-              {/* Tombol Ganti Foto di Bawah Pas Foto (Clean Style, Tanpa Border) */}
+              {/* Tombol Ganti Foto */}
               <button
                 type="button"
                 onClick={handlePhotoClick}
-                className="w-full px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-[10px] font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                className="w-full px-2.5 py-1.5 bg-white/15 hover:bg-white/25 text-white rounded-xl text-[10px] font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs border border-white/20"
               >
-                <Camera className="w-3.5 h-3.5 text-sky-300" />
+                <Camera className="w-3.5 h-3.5 text-blue-100" />
                 <span>Ganti Foto</span>
               </button>
 
@@ -169,10 +169,10 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
             {/* Detail Nama & Akses Pintas */}
             <div className="space-y-1.5 min-w-0">
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
-                {studentData.name}
+                {studentData?.name}
               </h1>
 
-              <p className="text-xs text-slate-300 flex items-center gap-1.5 flex-wrap">
+              <p className="text-xs text-blue-100 flex items-center gap-1.5 flex-wrap">
                 <span>NIM: <strong className="font-mono text-white">{studentData?.nim || '2301019082'}</strong></span>
                 <span>•</span>
                 <span>{studentData?.prodi || 'S1 - Sains Data'}</span>
@@ -181,16 +181,16 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
               <div className="flex flex-wrap items-center gap-2 pt-1">
                 <button
                   onClick={() => setActiveTab && setActiveTab('status-registrasi')}
-                  className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  className="px-3.5 py-1.5 bg-white text-blue-700 hover:bg-blue-50 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md cursor-pointer"
                 >
                   <UserCheck className="w-3.5 h-3.5" />
                   <span>Cek Status ACC KRS</span>
                 </button>
                 <button
                   onClick={() => setActiveTab && setActiveTab('lihat-penawaran')}
-                  className="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer"
+                  className="px-3.5 py-1.5 bg-white/15 hover:bg-white/25 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer border border-white/20"
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-sky-300" />
+                  <BookOpen className="w-3.5 h-3.5 text-blue-100" />
                   <span>Penawaran Matkul</span>
                 </button>
               </div>
@@ -200,10 +200,10 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
 
           {/* SISI KANAN: KARTU IDENTITAS */}
           <div className="lg:col-span-5">
-            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 sm:p-4 text-xs space-y-2.5">
-              <div className="flex justify-between items-center border-b border-white/10 pb-2">
-                <span className="text-[10px] uppercase font-bold text-sky-300 tracking-wider">Kartu Informasi Mahasiswa</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3.5 sm:p-4 text-xs space-y-2.5">
+              <div className="flex justify-between items-center border-b border-white/15 pb-2">
+                <span className="text-[10px] uppercase font-bold text-blue-100 tracking-wider">Kartu Informasi Mahasiswa</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-200 border border-emerald-300/30 flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" />
                   <span>{studentData?.statusAkademik || 'Aktif Kuliah'}</span>
                 </span>
@@ -211,22 +211,22 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
 
               <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-[11px]">
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Dosen PA</span>
+                  <span className="text-blue-100 block text-[10px]">Dosen PA</span>
                   <span className="font-semibold text-white truncate block">{studentData?.dosenPA || 'Wulan Izzatul Himmah, S.Pd., M.Pd.'}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Status UKT</span>
-                  <span className="font-bold text-emerald-400 flex items-center gap-1">
+                  <span className="text-blue-100 block text-[10px]">Status UKT</span>
+                  <span className="font-bold text-emerald-300 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3" /> Lunas
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Fakultas / Prodi</span>
+                  <span className="text-blue-100 block text-[10px]">Fakultas / Prodi</span>
                   <span className="font-bold text-white truncate block">{studentData?.fakultas || 'Sains & Teknologi'}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Batas Beban SKS</span>
-                  <span className="font-bold text-amber-300">24 SKS</span>
+                  <span className="text-blue-100 block text-[10px]">Batas Beban SKS</span>
+                  <span className="font-bold text-amber-200">24 SKS</span>
                 </div>
               </div>
             </div>

@@ -44,7 +44,7 @@ function KartuStatistik({ ikon, label, nilai, detail }) {
   return (
     <div className="min-w-0 rounded-xl border border-gray-200 bg-white p-2 shadow-sm sm:rounded-2xl sm:p-5">
       <div className="flex flex-col-reverse items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-3">
-        <p className="break-words text-[9px] font-medium leading-tight text-gray-500 sm:text-sm">
+        <p className="wrap-break-word text-[9px] font-medium leading-tight text-gray-500 sm:text-sm">
           {label}
         </p>
 
@@ -53,11 +53,11 @@ function KartuStatistik({ ikon, label, nilai, detail }) {
         </span>
       </div>
 
-      <p className="mt-2 break-words text-base font-bold text-gray-900 sm:mt-3 sm:text-2xl">
+      <p className="mt-2 wrap-break-word text-base font-bold text-gray-900 sm:mt-3 sm:text-2xl">
         {nilai}
       </p>
 
-      <p className="mt-1 break-words text-[8px] leading-tight text-gray-500 sm:text-xs">
+      <p className="mt-1 wrap-break-word text-[8px] leading-tight text-gray-500 sm:text-xs">
         {detail}
       </p>
     </div>
@@ -121,7 +121,7 @@ export default function JadwalKuliah() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-800 via-blue-700 to-indigo-700 p-4 text-white shadow-sm sm:p-8">
+      <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-blue-800 via-blue-700 to-indigo-700 p-4 text-white shadow-sm sm:p-8">
         <div className="relative z-10 max-w-2xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-blue-50">
             <Ikon nama="graduation" className="h-4 w-4" />
@@ -135,7 +135,7 @@ export default function JadwalKuliah() {
             pembelajaran mata kuliah dalam satu halaman.
           </p>
         </div>
-        <div className="pointer-events-none absolute -right-8 -top-12 h-56 w-56 rounded-full border-[30px] border-white/10" />
+        <div className="pointer-events-none absolute -right-8 -top-12 h-56 w-56 rounded-full border-30   border-white/10" />
         <div className="pointer-events-none absolute -bottom-24 right-28 h-48 w-48 rounded-full bg-white/5" />
       </section>
 
@@ -310,7 +310,7 @@ export default function JadwalKuliah() {
             {/* Tabel Jadwal */}
             {dataTampil.length > 0 ? (
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[650px] text-left text-xs sm:min-w-[850px] sm:text-sm">
+                <table className="w-full min-w-162.5 text-left text-xs sm:min-w-212.5 sm:text-sm">
                   <thead className="bg-gray-50 text-[10px] uppercase tracking-wide text-gray-500 sm:text-xs">
                     <tr>
                       <th className="px-3 py-3 sm:px-5 sm:py-4">Waktu</th>
