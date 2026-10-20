@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { studentData } from '../data/studentData';
+import React, { useState } from 'react';
+import logoUin from '../assets/logo-uin.png'
 import {
   LayoutDashboard,
   User,
@@ -9,7 +9,6 @@ import {
   Wallet,
   ChevronDown,
   ChevronRight,
-  Camera,
   FileText,
   Search,
   Award,
@@ -18,13 +17,11 @@ import {
   CreditCard,
   FileSpreadsheet,
   Megaphone,
-  X
+  X,
+  Headphones
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
-  const fileInputRef = useRef(null);
-  const [avatarSrc, setAvatarSrc] = useState(studentData?.avatar || null);
-
   // State Accordion Menu
   const [openMenus, setOpenMenus] = useState({
     profil: false,
@@ -33,6 +30,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
     perkuliahan: false,
     keuangan: false,
     layanan: false,
+    helpdesk: false,
   });
 
   const toggleMenu = (menuKey) => {
@@ -42,22 +40,6 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
     }));
   };
 
-  // Trigger Upload Foto dari Avatar
-  const handleAvatarClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setAvatarSrc(imageUrl);
-      alert('Foto profil berhasil diperbarui!');
-    }
-  };
-
   // Struktur Menu Terstruktur & Minimalis
   const menuGroups = [
     {
@@ -65,8 +47,9 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       title: 'Profil & Akun',
       icon: User,
       items: [
-        { id: 'biodata', label: 'Biodata & Data Dikti', icon: FileText },
-        { id: 'account', label: 'Pengaturan Akun', icon: User },
+        { id: 'biodata-dikti', label: 'Biodata & Data Dikti', icon: FileText },
+        { id: 'pengaturan-akun', label: 'Pengaturan Akun', icon: User },
+        { id: 'ganti-password', label: 'Ganti Password', icon: Award }
       ],
     },
     {
@@ -74,9 +57,9 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       title: 'KRS & Registrasi',
       icon: BookOpen,
       items: [
-        { id: 'status-registrasi', label: 'Status Registrasi Ulang', icon: FileText },
-        { id: 'input-penawaran', label: 'Input Penawaran Matkul', icon: BookOpen },
+        { id: 'status-registrasi', label: 'Status ACC KRS', icon: FileText },
         { id: 'lihat-penawaran', label: 'Lihat Penawaran Matkul', icon: Search },
+        { id: 'isi-krs', label: 'Pengisian KRS', icon: BookOpen },
         { id: 'cetak-krs', label: 'Lihat / Cetak KRS', icon: FileText },
       ],
     },
@@ -85,9 +68,8 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       title: 'KHS & Transkrip',
       icon: GraduationCap,
       items: [
-        { id: 'sejarah-ip', label: 'Sejarah IP', icon: Clock },
-        { id: 'lihat-khs', label: 'Lihat KHS / Kartu Studi', icon: Award },
-        { id: 'transkrip-sementara', label: 'Transkrip Sementara', icon: FileSpreadsheet },
+        { id: 'khs-semester', label: 'KHS Per Semester', icon: Award },
+        { id: 'transkrip-nilai', label: 'Transkrip Nilai Akademik', icon: FileSpreadsheet },
       ],
     },
     {
@@ -97,7 +79,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       items: [
         { id: 'jadwal-silabus', label: 'Jadwal Kuliah & Silabus', icon: Calendar },
         { id: 'informasi-kehadiran', label: 'Informasi Kehadiran', icon: Clock },
-        { id: 'jadwal-ujian', label: 'Jadwal Ujian', icon: FileText },
+        { id: 'jadwal-ujian', label: 'Jadwal Ujian (UTS/UAS)', icon: FileText },
         { id: 'remidi', label: 'Informasi Remidi', icon: HelpCircle },
       ],
     },
@@ -106,8 +88,8 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       title: 'Keuangan & UKT',
       icon: Wallet,
       items: [
-        { id: 'rekap-pembayaran', label: 'Rekap Pembayaran', icon: CreditCard },
         { id: 'tagihan-ukt', label: 'Informasi Tagihan UKT', icon: FileText },
+        { id: 'rekap-pembayaran', label: 'Rekap Pembayaran UKT', icon: CreditCard },
       ],
     },
     {
@@ -115,79 +97,66 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
       title: 'Informasi & Layanan',
       icon: Megaphone,
       items: [
-        { id: 'news-info', label: 'News & Info Kampus', icon: Megaphone },
-        { id: 'cari-mahasiswa', label: 'Direktori Mahasiswa', icon: Search },
-        { id: 'undangan-beasiswa', label: 'Informasi Beasiswa', icon: Award },
+        { id: 'news-info', label: 'Berita & Pengumuman', icon: Megaphone },
+        { id: 'beasiswa-prestasi', label: 'Informasi Beasiswa', icon: Award },
       ],
     },
+    {
+      key: 'helpdesk',
+      title: 'Helpdesk & FAQ',
+      icon: Headphones,
+      items: [
+        { id: 'helpdesk', label: 'Pusat Bantuan', icon: Headphones }
+      ]
+    }
   ];
 
   return (
     <>
-      {/* Overlay Backdrop untuk HP/Tablet */}
+      {/* Overlay Backdrop untuk Layar Mobile */}
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden"
         ></div>
       )}
 
       <aside
-        className={`fixed lg:static top-0 left-0 z-50 w-64 bg-slate-900 text-slate-200 h-screen lg:h-auto min-h-screen flex flex-col shrink-0 shadow-2xl lg:shadow-xl font-sans transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static top-0 left-0 z-50 w-64 bg-slate-900 text-slate-200 h-screen lg:h-auto min-h-screen flex flex-col shrink-0 shadow-2xl lg:shadow-xl font-sans transition-transform duration-300 ease-in-out print:hidden ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Hidden Input untuk File Avatar */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          accept="image/*"
-          className="hidden"
-        />
-
-        {/* Header Profil Samping */}
-        <div className="p-5 flex flex-col items-center text-center border-b border-slate-800/80 space-y-3 relative">
-          
-          {/* Tombol Close untuk Layar Mobile */}
-          <button
-            onClick={onClose}
-            className="lg:hidden absolute top-3 right-3 p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-          >
-            <X className="w-5 h-5" />
-          </button>
-
-          {/* Avatar Interaktif dengan Hover Kamera */}
-          <div
-            onClick={handleAvatarClick}
-            className="relative group w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-slate-400 cursor-pointer overflow-hidden transition shadow-inner"
-            title="Klik untuk mengubah foto profil"
-          >
-            {avatarSrc ? (
-              <img src={avatarSrc} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <User className="w-8 h-8" />
-            )}
-
-            {/* Hover Camera Overlay */}
-            <div className="absolute inset-0 bg-slate-950/70 text-white opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-[9px] font-bold">
-              <Camera className="w-4 h-4 mb-0.5" />
-              <span>Ubah</span>
+        {/* BRANDING LOGO BARU: SIAKAD.Nextgen */}
+        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between relative">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-blue-600 via-indigo-600 to-sky-400 flex items-center justify-center p-1.5 shadow-md shrink-0">
+              <img 
+                src={logoUin} 
+                alt="Logo UIN" 
+                className="w-full h-full object-contain filter drop-shadow-sm" 
+              />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-base font-extrabold text-white tracking-tight flex items-center gap-0.5">
+                <span>SIAKAD</span>
+                <span className="text-sky-400 font-black">.NextGen</span>
+              </h1>
+              <p className="text-[10px] text-slate-400 truncate">UIN Salatiga Portal</p>
             </div>
           </div>
 
-          <div>
-            <h2 className="font-bold text-xs text-white leading-snug truncate max-w-47.5">
-              {studentData?.name || 'Bintang Syailendra'}
-            </h2>
-            <p className="text-[12px] font-semibold text-slate-300 font-mono mt-1">
-              NIM: {studentData?.nim || '2301019082'}
-            </p>
-          </div>
+          {/* Tombol Close untuk Layar Mobile */}
+          <button
+            onClick={onClose}
+            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            title="Tutup Menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigasi Sub-menu */}
-        <nav className="flex-1 py-3 px-3 space-y-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800">
+        <nav className="flex-1 py-3 px-3 space-y-1 overflow-y-auto custom-scrollbar">
           
           {/* Dashboard Utama */}
           <button
@@ -196,7 +165,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
               if (onClose) onClose();
             }}
             className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
-              activeTab === 'beranda'
+              activeTab === 'beranda' || activeTab === 'dashboard'
                 ? 'bg-blue-600 text-white shadow-md font-bold'
                 : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'
             }`}
@@ -259,6 +228,11 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
             );
           })}
         </nav>
+
+        {/* Footer Sidebar */}
+        <div className="p-3 border-t border-slate-800/80 text-[10px] text-slate-500 text-center">
+          <span>SIAKAD.NextGen • UIN Salatiga</span>
+        </div>
       </aside>
     </>
   );

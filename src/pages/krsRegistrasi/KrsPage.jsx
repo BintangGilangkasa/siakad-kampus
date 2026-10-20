@@ -110,9 +110,6 @@ const KrsPage = ({ setActiveTab }) => {
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-              Tahap 3: Input & Penguncian KRS
-            </span>
             <span className="text-xs text-slate-500 font-medium">
               Semester {student.semester} ({student.academicYear})
             </span>
@@ -137,7 +134,7 @@ const KrsPage = ({ setActiveTab }) => {
             </span>
           </div>
           <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-            <div
+            <div  
               className={`h-full transition-all duration-300 ${
                 totalSks > maxSks ? 'bg-rose-500' : 'bg-blue-600'
               }`}
