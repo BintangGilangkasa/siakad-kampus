@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 import {
@@ -16,23 +15,23 @@ export default function InformasiKehadiran() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Judul halaman */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">
+        <h1 className="text-xl font-bold text-slate-800 sm:text-2xl">
           Informasi Kehadiran
         </h1>
 
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-xs leading-relaxed text-slate-500 sm:text-sm">
           Informasi rekapitulasi kehadiran perkuliahan mahasiswa.
         </p>
       </div>
 
       {/* Filter semester */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:p-5">
         <label
           htmlFor="semester"
-          className="mb-2 block text-sm font-medium text-slate-700"
+          className="mb-2 block text-xs font-medium text-slate-700 sm:text-sm"
         >
           Pilih Semester
         </label>
@@ -41,7 +40,7 @@ export default function InformasiKehadiran() {
           id="semester"
           value={semester}
           onChange={(e) => setSemester(e.target.value)}
-          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:max-w-xs"
+          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-xs outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:max-w-xs sm:px-4 sm:py-3 sm:text-sm"
         >
           {daftarSemester.map((item) => (
             <option key={item} value={item}>
@@ -53,41 +52,43 @@ export default function InformasiKehadiran() {
 
       {/* Tabel kehadiran */}
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-200 px-5 py-4">
-          <h2 className="font-semibold text-slate-800">
+        {/* Header tabel */}
+        <div className="border-b border-slate-200 px-3 py-3 sm:px-5 sm:py-4">
+          <h2 className="text-sm font-semibold text-slate-800 sm:text-base">
             Rekap Kehadiran
           </h2>
 
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-[10px] text-slate-500 sm:text-sm">
             {semester} · {dataSemester.length} mata kuliah
           </p>
         </div>
 
+        {/* Tabel responsif */}
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[650px] text-left text-sm">
-            <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <table className="w-full min-w-[560px] border-collapse text-left text-xs sm:min-w-[650px] sm:text-sm">
+            <thead className="bg-slate-50 text-[10px] uppercase tracking-wide text-slate-500 sm:text-xs">
               <tr>
-                <th className="px-5 py-4 font-semibold">
+                <th className="whitespace-nowrap px-2 py-3 font-semibold sm:px-5 sm:py-4">
                   No.
                 </th>
 
-                <th className="px-5 py-4 font-semibold">
+                <th className="whitespace-nowrap px-2 py-3 font-semibold sm:px-5 sm:py-4">
                   Kode
                 </th>
 
-                <th className="px-5 py-4 font-semibold">
+                <th className="px-2 py-3 font-semibold sm:px-5 sm:py-4">
                   Mata Kuliah
                 </th>
 
-                <th className="px-5 py-4 text-center font-semibold">
+                <th className="whitespace-nowrap px-2 py-3 text-center font-semibold sm:px-5 sm:py-4">
                   SKS
                 </th>
 
-                <th className="px-5 py-4 text-center font-semibold">
+                <th className="whitespace-nowrap px-2 py-3 text-center font-semibold sm:px-5 sm:py-4">
                   Kehadiran
                 </th>
 
-                <th className="px-5 py-4 text-center font-semibold">
+                <th className="whitespace-nowrap px-2 py-3 text-center font-semibold sm:px-5 sm:py-4">
                   Persentase
                 </th>
               </tr>
@@ -108,29 +109,37 @@ export default function InformasiKehadiran() {
                       key={item.kode}
                       className="transition hover:bg-slate-50"
                     >
-                      <td className="px-5 py-4 text-slate-500">
+                      {/* Nomor */}
+                      <td className="whitespace-nowrap px-2 py-3 text-slate-500 sm:px-5 sm:py-4">
                         {index + 1}
                       </td>
 
-                      <td className="px-5 py-4 font-medium text-slate-700">
+                      {/* Kode mata kuliah */}
+                      <td className="whitespace-nowrap px-2 py-3 font-medium text-slate-700 sm:px-5 sm:py-4">
                         {item.kode}
                       </td>
 
-                      <td className="px-5 py-4 font-medium text-slate-800">
-                        {item.mataKuliah}
+                      {/* Nama mata kuliah */}
+                      <td className="min-w-[150px] px-2 py-3 sm:min-w-[200px] sm:px-5 sm:py-4">
+                        <p className="text-xs font-medium leading-snug text-slate-800 sm:text-sm">
+                          {item.mataKuliah}
+                        </p>
                       </td>
 
-                      <td className="px-5 py-4 text-center text-slate-600">
+                      {/* SKS */}
+                      <td className="whitespace-nowrap px-2 py-3 text-center text-slate-600 sm:px-5 sm:py-4">
                         {item.sks}
                       </td>
 
-                      <td className="px-5 py-4 text-center text-slate-600">
+                      {/* Jumlah kehadiran */}
+                      <td className="whitespace-nowrap px-2 py-3 text-center text-[10px] text-slate-600 sm:px-5 sm:py-4 sm:text-sm">
                         {item.hadir}/{item.total} pertemuan
                       </td>
 
-                      <td className="px-5 py-4 text-center">
+                      {/* Persentase */}
+                      <td className="whitespace-nowrap px-2 py-3 text-center sm:px-5 sm:py-4">
                         <span
-                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                          className={`inline-flex rounded-full px-2 py-1 text-[10px] font-semibold sm:px-3 sm:text-xs ${
                             persentase >= 80
                               ? 'bg-emerald-50 text-emerald-700'
                               : 'bg-amber-50 text-amber-700'
@@ -146,7 +155,7 @@ export default function InformasiKehadiran() {
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-5 py-10 text-center text-slate-500"
+                    className="px-3 py-8 text-center text-xs text-slate-500 sm:px-5 sm:py-10 sm:text-sm"
                   >
                     Belum ada data kehadiran untuk {semester}.
                   </td>
@@ -156,7 +165,8 @@ export default function InformasiKehadiran() {
           </table>
         </div>
 
-        <div className="border-t border-slate-200 px-5 py-3 text-xs text-slate-500">
+        {/* Catatan */}
+        <div className="border-t border-slate-200 px-3 py-3 text-[10px] leading-relaxed text-slate-500 sm:px-5 sm:text-xs">
           Catatan: data kehadiran merupakan data dummy untuk pengujian
           antarmuka dan filter semester.
         </div>

@@ -14,12 +14,20 @@ import KrsPage from './pages/krsRegistrasi/KrsPage';
 import CetakKrsPage from './pages/krsRegistrasi/CetakKrsPage';
 import LihatPenawaranPage from './pages/krsRegistrasi/LihatPenawaranPage';
 
+//KHS & Transkrip
+import SejarahIpPage from './pages/khsTranskrip/SejarahIpPage';
+import LihatKhsPage from './pages/khsTranskrip/LihatKhsPage';
+import TranskripSementaraPage from './pages/khsTranskrip/TranskripSementaraPage';
+
 // Keuangan
 import TagihanUktPage from './pages/keuangan/TagihanUktPage';
 import RekapPembayaranPage from './pages/keuangan/RekapPembayaranPage';
 
 // Perkuliahan
 import InformasiKehadiran from './pages/perkuliahan/InformasiKehadiran';
+import JadwalUjian from './pages/perkuliahan/JadwalUjian';
+import InformasiRemidi from './pages/perkuliahan/InformasiRemidi';
+import JadwalKuliah from './pages/perkuliahan/JadwalKuliah';
 
 //Halaman tidak ditemukan
 import NotFoundPage from './pages/NotFoundPage';
@@ -69,6 +77,16 @@ export default function App() {
       case 'cetak-krs':
         return <CetakKrsPage />;
 
+      //KHS & Transkrip
+      case 'sejarah-ip':
+        return <SejarahIpPage />;
+
+      case 'lihat-khs':
+        return <LihatKhsPage />;
+
+      case 'transkrip-sementara':
+        return <TranskripSementaraPage />;
+
       // Modul Pengaturan Akun
       case 'account':
         return <AccountSettingsPage />;
@@ -76,6 +94,15 @@ export default function App() {
       // Modul Perkuliahan
       case 'informasi-kehadiran':
         return <InformasiKehadiran />;  
+
+      case 'jadwal-ujian':
+        return <JadwalUjian />;
+
+      case 'remidi':
+        return <InformasiRemidi />;
+
+      case 'jadwal-silabus':
+        return <JadwalKuliah />;
 
       // Modul Keuangan / UKT
       case  'tagihan-ukt':

@@ -27,34 +27,48 @@ export default function HomePage({ onOpenKrsModal, setActiveTab }) {
     <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto font-sans text-slate-800 w-full min-w-0 px-2 sm:px-4 lg:px-0">
       
       {/* 1. Header Banner */}
-      <div className="bg-linear-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-md relative overflow-hidden">
-        <div className="absolute -right-10 -bottom-10 w-36 h-36 sm:w-48 sm:h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-800 via-blue-700 to-indigo-700 p-4 text-white shadow-sm sm:rounded-2xl sm:p-6">
+        {/* Dekorasi background */}
+        <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full border-[20px] border-white/10 sm:h-56 sm:w-56 sm:border-[30px]" />
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-1">
-            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-sky-300 text-[10px] sm:text-[11px] font-medium">
-              <GraduationCap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400 shrink-0" />
-              <span className="truncate">Semester {studentData?.semester || 7} • TA 2026/2027 Ganjil</span>
+        <div className="pointer-events-none absolute -bottom-20 right-20 h-36 w-36 rounded-full bg-white/5 sm:-bottom-24 sm:right-28 sm:h-48 sm:w-48" />
+
+        {/* Konten Header */}
+        <div className="relative z-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="min-w-0 space-y-1">
+            <div className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-medium text-blue-50 sm:text-xs">
+              <GraduationCap className="h-3.5 w-3.5 shrink-0 text-blue-100 sm:h-4 sm:w-4" />
+
+              <span className="truncate">
+                Semester {studentData?.semester || 7} • TA 2026/2027 Ganjil
+              </span>
             </div>
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-black tracking-tight">
-              Selamat Datang, {studentData.name.split(' ')[0]}! 👋  
+
+            <h1 className="text-lg font-black tracking-tight sm:text-xl lg:text-2xl">
+              Selamat Datang, {studentData.name.split(' ')[0]}! 👋
             </h1>
-            <p className="text-[11px] sm:text-xs text-slate-300 leading-normal">
-              Dosen Pembimbing A: <strong className="text-white font-semibold">{studentData?.dosenPA || 'Dr. Hendra Kusuma, M.Si.'}</strong>
+
+            <p className="text-[11px] leading-normal text-blue-100 sm:text-xs">
+              Dosen Pembimbing A:{' '}
+              <strong className="font-semibold text-white">
+                {studentData?.dosenPA || 'Dr. Hendra Kusuma, M.Si.'}
+              </strong>
             </p>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-2.5 shrink-0 w-full sm:w-auto">
+          {/* Tombol */}
+          <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto sm:gap-2.5">
             <button
               onClick={onOpenKrsModal}
-              className="flex-1 sm:flex-none justify-center px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1.5"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-blue-500 active:bg-blue-700 sm:flex-none sm:px-4 sm:py-2.5"
             >
-              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              <BookOpen className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
               <span>Simulasi KRS</span>
             </button>
+
             <button
               onClick={() => setActiveTab && setActiveTab('cetak-krs')}
-              className="flex-1 sm:flex-none justify-center px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition flex items-center space-x-1.5"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-white/20 sm:flex-none sm:px-4 sm:py-2.5"
             >
               <span>Lihat KRS</span>
             </button>
